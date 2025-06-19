@@ -26,16 +26,15 @@
     this.options = Object.assign({
       transition: 'fade'
     }, params);
-
     this._init();
   };
-
-  var $html = document.querySelector('html');
+  var $html;
   jPopup.prototype = {
     _init: function _init() {
       this._render(this.options.content)._setupEvents();
     },
     _render: function _render() {
+      $html = document.querySelector('html');
       document.body.insertAdjacentHTML('beforeend', "<div class=\"jPopup jPopup--".concat(this.options.transition, "\"><button type=\"button\" class=\"jPopup-closeBtn\"></button><div class=\"jPopup-content\">").concat(this.options.content, "</div></div>"));
       this.$el = $html.querySelector('.jPopup');
       this.$closeBtn = $html.querySelector('.jPopup-closeBtn');
@@ -43,7 +42,6 @@
     },
     _setupEvents: function _setupEvents() {
       var _this = this;
-
       this.$closeBtn.addEventListener('click', function () {
         return _this.close();
       });
@@ -51,7 +49,6 @@
         return _this._onEscPress(e);
       });
     },
-
     /**
      * @param {Object}
     */
@@ -62,7 +59,6 @@
     },
     close: function close() {
       $html.classList.remove('jPopup--isOpen');
-
       if (this.options.onClose && typeof this.options.onClose == 'function') {
         this.options.onClose(this.$el);
       }
@@ -71,10 +67,8 @@
       if (this.options.onOpen && typeof this.options.onOpen == 'function') {
         this.options.onOpen(this.$el);
       }
-
       $html.classList.add('jPopup--isOpen');
     },
-
     /**
      * @param {String}
     */
@@ -82,7 +76,6 @@
       this.options.content = content;
       this.$el.querySelector('.jPopup-content').innerHTML = this.options.content;
     },
-
     /**
      * @return {String}
     */
@@ -91,7 +84,6 @@
     },
     destroy: function destroy() {
       window.removeEventListener('keydown', this._onEscPress);
-      this.$closeBtn.removeEventListener('click', this.close);
       this.$el.parentNode.removeChild(this.$el);
     }
   };
